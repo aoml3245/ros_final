@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip build-essential nano vim net-tools \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install flask
+RUN pip3 install flask requests
     
 
 ENV LANG C.UTF-8
