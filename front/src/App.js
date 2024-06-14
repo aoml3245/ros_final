@@ -11,6 +11,10 @@ const App = () => {
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
 
+  const [url, setUrl] = useState('');
+  const [moveCommand, setMoveCommand] = useState('');
+  const [direction, setDirection] = useState(0);
+
   const videoRef = React.useRef();
   const videoHeight = 480;
   const videoWidth = 640;
@@ -57,6 +61,39 @@ const App = () => {
       });
   };
 
+  const handleSetUrl = () => {
+    axios.post('/api/seturl', { url })
+      .then(response => {
+        console.log(response.data);
+        alert(`Response from /api/seturl: ${response.data.message}`);
+      })
+      .catch(error => {
+        console.error('There was an error making the POST request!', error);
+      });
+  };
+
+  const handleMove = () => {
+    axios.post('/api/move', { command: moveCommand })
+      .then(response => {
+        console.log(response.data);
+        alert(`Response from /api/move: ${response.data.message}`);
+      })
+      .catch(error => {
+        console.error('There was an error making the POST request!', error);
+      });
+  };
+
+  const handleMoveDir = () => {
+    axios.post('/api/movedir', { direction: parseInt(direction) })
+      .then(response => {
+        console.log(response.data);
+        alert(`Response from /api/movedir: ${response.data.message}`);
+      })
+      .catch(error => {
+        console.error('There was an error making the POST request!', error);
+      });
+  };
+
   return (
     <div style={{ textAlign: 'center' }}>
       <h1>Face Detection</h1>
@@ -79,6 +116,24 @@ const App = () => {
         
       </div>
       <button onClick={handleButtonClick}>Send GET Request to /api/hello</button>
+
+      <div>
+        <h2>Set URL</h2>
+        <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Enter URL" />
+        <button onClick={handleSetUrl}>Set URL</button>
+      </div>
+
+      <div>
+        <h2>Move Command</h2>
+        <input type="text" value={moveCommand} onChange={(e) => setMoveCommand(e.target.value)} placeholder="Enter move command (e.g., 'X10 Y10')" />
+        <button onClick={handleMove}>Send Move Command</button>
+      </div>
+
+      <div>
+        <h2>Move Direction</h2>
+        <input type="number" value={direction} onChange={(e) => setDirection(e.target.value)} placeholder="Enter direction (0, 1, -1)" />
+        <button onClick={handleMoveDir}>Send Move Direction</button>
+      </div>
     </div>
   );
 };
