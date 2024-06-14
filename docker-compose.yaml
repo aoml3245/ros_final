@@ -4,7 +4,8 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - 20084:443
+      - 443:443
+      - 80:80
     restart: always
   react:
     build:
