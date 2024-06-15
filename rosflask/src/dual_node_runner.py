@@ -97,9 +97,9 @@ class ROSController(Node):
             if direction == 0:
                 command_text = "G92%20X0%20Y0"
             elif direction == 1:
-                command_text = "G1%20X10%20Y10"
+                command_text = "G1%20X5%20Y5"
             elif direction == -1:
-                command_text = "G1%20X-10%20Y-10"
+                command_text = "G1%20X-5%20Y-5"
             else:
                 self.get_logger().error("Invalid direction")
                 return
