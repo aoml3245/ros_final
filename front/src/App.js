@@ -83,7 +83,7 @@ const App = () => {
         videoConstraints={{ facingMode: 'user' }}
         style={{ width: '100%', height: 'auto' }}
       />
-      {(!urlSet || !modelsLoaded) && (
+      {!(urlSet && modelsLoaded) && (
         <div className="modal">
           <div className="modal-content">
             <h2>{modalMessage}</h2>
