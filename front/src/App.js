@@ -46,7 +46,7 @@ const App = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       detectFaces();
-    }, 2000);
+    }, 500);
     return () => clearInterval(interval);
   }, []);
 
@@ -72,7 +72,7 @@ const App = () => {
     axios.post('/api/movedir', { direction })
       .then(response => {
         console.log(response.data);
-        alert(`Response from /api/movedir: ${response.data.message}`);
+        // alert(`Response from /api/movedir: ${response.data.message}`);
       })
       .catch(error => {
         console.error('There was an error making the POST request!', error);
@@ -83,7 +83,7 @@ const App = () => {
     axios.get('/api/hello')
       .then(response => {
         console.log(response.data);
-        alert(`Response from /api/hello: ${response.data}`);
+        // alert(`Response from /api/hello: ${response.data}`);
       })
       .catch(error => {
         console.error('There was an error making the GET request!', error);
@@ -94,7 +94,7 @@ const App = () => {
     axios.post('/api/seturl', { url })
       .then(response => {
         console.log(response.data);
-        alert(`Response from /api/seturl: ${response.data.message}`);
+        // alert(`Response from /api/seturl: ${response.data.message}`);
       })
       .catch(error => {
         console.error('There was an error making the POST request!', error);
@@ -105,7 +105,7 @@ const App = () => {
     axios.post('/api/move', { command: moveCommand })
       .then(response => {
         console.log(response.data);
-        alert(`Response from /api/move: ${response.data.message}`);
+        // alert(`Response from /api/move: ${response.data.message}`);
       })
       .catch(error => {
         console.error('There was an error making the POST request!', error);
@@ -118,7 +118,7 @@ const App = () => {
     axios.post('/api/movedir', { direction: parseInt(direction) })
       .then(response => {
         console.log(response.data);
-        alert(`Response from /api/movedir: ${response.data.message}`);
+        // alert(`Response from /api/movedir: ${response.data.message}`);
       })
       .catch(error => {
         console.error('There was an error making the POST request!', error);
