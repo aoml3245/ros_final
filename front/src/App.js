@@ -46,9 +46,38 @@ const App = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       detectFaces();
-    }, 100);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (detections.length > 0) {
+      const detection = detections[0].detection.box;
+      const faceCenterX = detection._x + detection._width / 2;
+      const screenWidth = webcamRef.current.video.videoWidth;
+      const leftBoundary = screenWidth / 5;
+      const rightBoundary = 4 * screenWidth / 5;
+
+      if (faceCenterX < leftBoundary) {
+        sendMoveDirection(1); // 오른쪽으로 이동
+      } else if (faceCenterX > rightBoundary) {
+        sendMoveDirection(-1); // 왼쪽으로 이동
+      }
+    }
+  }, [detections]);
+
+  const sendMoveDirection = async (direction) => {
+    await axios.post('/api/movedir', { direction: "0" });
+    
+    axios.post('/api/movedir', { direction })
+      .then(response => {
+        console.log(response.data);
+        alert(`Response from /api/movedir: ${response.data.message}`);
+      })
+      .catch(error => {
+        console.error('There was an error making the POST request!', error);
+      });
+  };
 
   const handleButtonClick = () => {
     axios.get('/api/hello')
@@ -82,6 +111,8 @@ const App = () => {
         console.error('There was an error making the POST request!', error);
       });
   };
+
+
 
   const handleMoveDir = () => {
     axios.post('/api/movedir', { direction: parseInt(direction) })
