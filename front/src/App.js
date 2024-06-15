@@ -55,24 +55,14 @@ const App = () => {
 
   const sendMoveDirection = async (direction) => {
     await axios.post('/api/movedir', { direction:0 })
-    axios.post('/api/movedir', { direction })
-      .then(response => {
-        console.log(response.data);
-        alert(`Response from /api/movedir: ${response.data.message}`);
-      })
-      .catch(error => {
-        console.error('There was an error making the POST request!', error);
-      });
+    await axios.post('/api/movedir', { direction })
   };
 
   const handleSetUrl = () => {
     axios.post('/api/seturl', { url })
       .then(response => {
-        console.log(response.data);
-        alert(`Response from /api/seturl: ${response.data.message}`);
       })
       .catch(error => {
-        console.error('There was an error making the POST request!', error);
       });
   };
 
@@ -89,11 +79,6 @@ const App = () => {
         />
         <div>
           {!modelsLoaded && "모델 로드 중입니다."}
-          {modelsLoaded && detections.map((detection, index) => (
-            <div key={index}>
-              <p>Face detected at: {JSON.stringify(detection.detection.box)}</p>
-            </div>
-          ))}
         </div>
       </div>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
