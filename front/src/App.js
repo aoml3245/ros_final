@@ -53,7 +53,8 @@ const App = () => {
     }
   }, [detections]);
 
-  const sendMoveDirection = (direction) => {
+  const sendMoveDirection = async (direction) => {
+    await axios.post('/api/movedir', { direction:0 })
     axios.post('/api/movedir', { direction })
       .then(response => {
         console.log(response.data);
