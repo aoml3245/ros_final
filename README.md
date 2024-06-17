@@ -1,36 +1,33 @@
-# ros_final
+# 얼굴 인식을 통한 사용자 트래킹 핸드폰 거치대 -Phone Mount with Face Recognition for User Tracking
 
-~~jetsonboard에 20.04.버전 다운(기존에 사용하던 버전임)~~
-용량 문제로 공식 지원 18.04 버전으로 교체
+> 주의!
+현재 rosflask Dockerfile이 jetson nano를 위한 이미지를 사용합니다.
+이 외의 디바이스에서 구동 시 이미지 버전을 바꿔주세요.
+> 
 
-```bash
-sudo apt install python3-dev
-git clone https://github.com/jetsonworld/jetson-fan-ctl.git
-cd jetson-fan-ctl
-sudo sh install.sh
-sudo nano /etc/automagic-fan/config.json
-sudo reboot
-```
+- 구동 방법(Jetson Nano)
 
 ```bash
 sudo apt update
 sudo apt upgrade
 sudo apt install dnsmasq hostapd ufw
+
+# port open
 sudo ufw enable
 sudo ufw allow 22
 sudo ufw allow 443
 sudo ufw allow 80
+
+# AP 모드 on
 git clone https://github.com/oblique/create_ap
 cd create_ap
 sudo make install
 ip link show
 sudo reboot
-
 sudo create_ap wlan0 eth0 Nano
 echo -e '#!/bin/bash\nsudo rfkill unblock all\nsudo create_ap --no-virt -w 2 wlan0 eth0 Nano 12341234' | sudo tee /etc/init.d/hotspot.sh > /dev/null
 echo -e '[Unit]\nDescription=Create WiFi hotspot using create_ap\nAfter=network.target\n\n[Service]\nExecStart=/usr/bin/sudo /etc/init.d/hotspot.sh\nRestart=on-failure\nRestartSec=30\nExecStartPre=/bin/sleep 30\n\n[Install]\nWantedBy=multi-user.target' | sudo tee /etc/systemd/system/hotspot.service > /dev/null
 sudo chmod +x /etc/init.d/hotspot.sh
-
 sudo systemctl daemon-reload
 sudo systemctl enable hotspot.service
 sudo systemctl start hotspot.service
@@ -54,33 +51,26 @@ sudo docker run hello-world
 sudo usermod -aG docker $USER
 ```
 
-docker nginx self signing 진행(ssl)
+```bash
+#핫스팟 내 노트북, 젯슨의 ip확인
 
-https://gist.github.com/ykarikos/06879cbb0d80828fe96445b504fa5b60
+#git clone 해당 레파지토리
 
-핫스팟 내 노트북, 젯슨의 ip확인
+cd ros_final
+docker compose up --build
+```
 
-front: react 홈페이지
-rosflask: ros+ flask 서버
-docker compose 테스트
+- 기타 참고 자료
+    - docker nginx self signing 진행(ssl)
+        
+        https://gist.github.com/ykarikos/06879cbb0d80828fe96445b504fa5b60
+        
 
-https://github.com/aoml3245/ros_final.git
-
-git clone 해서 해당 폴더 내에서 docker compose up —build 실행
-
-젯슨 보드에서 docker  실행하고 테스트
-
-수업에서 나눠준 보드에 marin firmware 설치
-
-viscose 설치
-
-platform io
-
-디버깅 모드로 보드와 컴퓨터 연결
-
-업로드(보드 업로드 모드 켜주기)
-
-보드 틀고 nano에 와이파이 연결해준다.
-
-테스트
-`G1 X1000 Y1000 F3000`
+- 수업에서 나눠준 보드에 marin firmware 설치
+    - vscose 설치
+    - platformio 익스텐션 설치
+    - 디버깅 모드로 보드와 컴퓨터 연결
+    - 업로드(보드 업로드 모드 켜주기)
+- 보드를 nano 핫스팟 연결해준다.
+- 스마트폰으로 nano 핫스팟에 연결해준다.
+- nano ip로 접속
